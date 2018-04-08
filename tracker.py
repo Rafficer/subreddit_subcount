@@ -15,12 +15,12 @@ request_headers = {
 "Connection": "keep-alive" 
 }
 
-req = urllib2.Request("https://reddit.com/r/{}/.json".format(subreddit), headers=request_headers)
+req = urllib2.Request("https://reddit.com/r/{}/about/.json".format(subreddit), headers=request_headers)
 res = urllib2.urlopen(req)
 
 jdata = json.loads(res.read())
 
-subscribers = jdata['data']['children'][0]['data']['subreddit_subscribers']
+subscribers = jdata['data']['subscribers']
 date = datetime.datetime.now().strftime("%y-%m-%d")
 
 if os.path.isfile(filename) == False:
