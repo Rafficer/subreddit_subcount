@@ -4,29 +4,35 @@ import datetime
 import os
 import sys
 
-subreddit = str(sys.argv[1])
-filename = "subcounts.{}.csv".format(subreddit)
+subreddits = sys.argv
+del subreddits[0]
 
-request_headers = {
-"Accept-Language": "en-US,en;q=0.5",
-"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0",
-"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-"Referer": "https://reddit.com",
-"Connection": "keep-alive" 
-}
+def get_subcount(subreddit):
+    filename = "subcounts.{}.csv".format(subreddit)
 
-req = urllib2.Request("https://reddit.com/r/{}/about/.json".format(subreddit), headers=request_headers)
-res = urllib2.urlopen(req)
+    request_headers = {
+    "Accept-Language": "en-US,en;q=0.5",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Referer": "https://reddit.com",
+    "Connection": "keep-alive" 
+    }
 
-jdata = json.loads(res.read())
+    req = urllib2.Request("https://reddit.com/r/{}/about/.json".format(subreddit), headers=request_headers)
+    res = urllib2.urlopen(req)
 
-subscribers = jdata['data']['subscribers']
-date = datetime.datetime.now().strftime("%y-%m-%d")
+    jdata = json.loads(res.read())
 
-if os.path.isfile(filename) == False:
-    with open(filename,"w+") as csvfile:
-        with open(filename, "a") as csvfile:
-            csvfile.write("Date, Subcount\n")
+    subscribers = jdata['data']['subscribers']
+    date = datetime.datetime.now().strftime("%Y-%m-%d")
 
-with open(filename, "a") as csvfile:
-    csvfile.write("{},{}\n".format(date, subscribers))
+    if os.path.isfile(filename) == False:
+        with open(filename,"w+") as csvfile:
+            with open(filename, "a") as csvfile:
+                csvfile.write("Date, Subcount\n")
+
+    with open(filename, "a") as csvfile:
+        csvfile.write("{},{}\n".format(date, subscribers))
+
+for sub in subreddits:
+    get_subcount(sub)
