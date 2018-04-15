@@ -9,7 +9,9 @@ The script will automatically create a file called subcounts.*subredditname*.csv
 
 You can add as many subreddits as you want.
 
-It's meant to be called via cron each day. I use `0 3 * * * python /path/to/file subredditname1 subredditname2`
+It's meant to be called via cron multiple times a day to ensure that it's not failing. It will only add a new entry once a day.
+
+I use `5 */2 * * * /path/to/file subredditname1 subredditname2`
 
 **Python modules required:**
 
