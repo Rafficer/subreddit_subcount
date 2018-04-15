@@ -21,6 +21,12 @@ def get_lastline(file):
 
 def process(subreddit):
     filename = "subcounts.{}.csv".format(subreddit)
+
+    if os.path.isfile(filename) == False:
+        with open(filename,"w+") as csvfile:
+            with open(filename, "a") as csvfile:
+                csvfile.write("Date, Subcount")
+
     lastdate = get_lastdate(filename)
 
     if date in lastdate:
@@ -44,11 +50,6 @@ def get_subcount(subreddit, filename):
     jdata = json.loads(res.read())
 
     subscribers = jdata['data']['subscribers']
-
-    if os.path.isfile(filename) == False:
-        with open(filename,"w+") as csvfile:
-            with open(filename, "a") as csvfile:
-                csvfile.write("Date, Subcount\n")
 
     with open(filename, "a") as csvfile:
         csvfile.write("\n{},{}".format(date, subscribers))
