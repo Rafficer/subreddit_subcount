@@ -12,7 +12,7 @@ DBName=""
 
 subreddits = sys.argv
 del subreddits[0]
-date = "2018-07-02"#datetime.datetime.now().strftime("%Y-%m-%d")
+date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 def process(subreddit):
     conn = MySQLdb.connect(host=DBServerHostname,
