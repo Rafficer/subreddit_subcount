@@ -5,7 +5,13 @@ Usage:
 
 * `python tracker.py subredditname1 subredditname2` 
 
-The script will automatically create a file called subcounts.*subredditname*.csv for each specified subreddit.
+The script now works with a database. It needs a Table called "Subcounts" in a Database.
+
+It also needs the following columns:
+
+![x](https://i.imgur.com/98uKSgm.png)
+
+If CSV files from previous Versions exist, they can be automatically thrown in a Database with the *transferCSVtoDB.py* Script.
 
 You can add as many subreddits as you want.
 
@@ -20,3 +26,4 @@ I use `5 */2 * * * /path/to/file subredditname1 subredditname2`
 * datetime
 * os
 * sys
+* MySQLdb
