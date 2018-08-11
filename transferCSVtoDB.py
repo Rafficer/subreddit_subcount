@@ -1,12 +1,13 @@
 import MySQLdb
+from DBCredentials import DBName, DBPassword, DBServerHostname, DBUsername
 
 filename = "subcounts.subredditname.csv"
 subredditname = "subredditname"
 
-conn = MySQLdb.connect(host="DBServerHostname",
-        user="DBUser",
-        passwd="DBPassword",
-        db="DBName")
+conn = MySQLdb.connect(host=DBServerHostname,
+        user=DBUsername,
+        passwd=DBPassword,
+        db=DBName)
 
 dbc = conn.cursor()
 
@@ -22,7 +23,7 @@ for x in data:
                 delimited = x.split(",")
                 date = delimited[0]
                 subcount = delimited[1]
-                dbc.execute("""INSERT INTO Subcounts (Date, Subreddit, Subcount) VALUES (%s,%s,%s)""",(date,subredditname,subcount))
+                dbc.execute("INSERT INTO Subcounts (Date, Subreddit, Subcount) VALUES (%s,%s,%s)",(date,subredditname,subcount))
                 conn.commit()
                 conn.close()
             i=i+1

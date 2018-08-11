@@ -15,9 +15,11 @@ If CSV files from previous Versions exist, they can be automatically thrown in a
 
 You can add as many subreddits as you want.
 
+**Add your DB credentials to DBCredentials.py and the subreddits to track to subredditlist.txt.**
+
 It's meant to be called via cron multiple times a day to ensure that it's not failing. It will only add a new entry once a day.
 
-I use `5 */2 * * * /path/to/file subredditname1 subredditname2`
+I use `5 */2 * * * /path/to/tracker.py`
 
 **Python modules required:**
 
@@ -25,5 +27,4 @@ I use `5 */2 * * * /path/to/file subredditname1 subredditname2`
 * urllib2
 * datetime
 * os
-* sys
 * MySQLdb

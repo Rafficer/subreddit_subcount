@@ -1,0 +1,4 @@
+DBServerHostname = ""
+DBUsername = ""
+DBPassword = ""
+DBName = ""

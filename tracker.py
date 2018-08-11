@@ -5,18 +5,17 @@ import os
 import sys
 import MySQLdb
 
-DBServerHostname=""
-DBUser=""
-DBPassword=""
-DBName=""
+from DBCredentials import DBName, DBPassword, DBServerHostname, DBUsername
 
-subreddits = sys.argv
-del subreddits[0]
+with open("subredditlist.txt", "r") as f:
+    subreddits = f.read().splitlines()
+    subreddits.remove("")
+
 date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 def process(subreddit):
     conn = MySQLdb.connect(host=DBServerHostname,
-			user=DBUser,
+			user=DBUsername,
 			passwd=DBPassword,
 			db=DBName)
 
@@ -42,7 +41,7 @@ def get_subcount(subreddit):
     "Connection": "keep-alive" 
     }
 
-    req = urllib2.Request("https://reddit.com/r/{}/about/.json".format(subreddit), headers=request_headers)
+    req = urllib2.Request("https://api.reddit.com/r/{}/about".format(subreddit), headers=request_headers)
     res = urllib2.urlopen(req)
 
     jdata = json.loads(res.read())
@@ -50,7 +49,7 @@ def get_subcount(subreddit):
     subscribers = jdata['data']['subscribers']
 
     conn = MySQLdb.connect(host=DBServerHostname,
-			user=DBUser,
+			user=DBUsername,
 			passwd=DBPassword,
 			db=DBName)
 
