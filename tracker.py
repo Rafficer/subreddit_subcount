@@ -7,9 +7,23 @@ import MySQLdb
 
 from DBCredentials import DBName, DBPassword, DBServerHostname, DBUsername
 
-with open("subredditlist.txt", "r") as f:
-    subreddits = f.read().splitlines()
-    subreddits.remove("")
+conn = MySQLdb.connect(host=DBServerHostname,
+			user=DBUsername,
+			passwd=DBPassword,
+			db=DBName)
+
+c = conn.cursor()
+c.execute("SELECT tracked_subs FROM tracked_subs")
+
+fetch = c.fetchall()
+
+subreddits = []
+
+for subreddit_from_DB in fetch:
+    subreddits.append(subreddit_from_DB[0])
+
+print subreddits
+
 
 date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -25,9 +39,10 @@ def process(subreddit):
     cond = dbc.fetchone()
     conn.close()
 
-
+    print "Checked " + subreddit
     if(cond != None):
-        exit(0)
+        print "exiting"
+        return
     else:
         get_subcount(subreddit)
 
@@ -51,13 +66,16 @@ def get_subcount(subreddit):
     conn = MySQLdb.connect(host=DBServerHostname,
 			user=DBUsername,
 			passwd=DBPassword,
-			db=DBName)
+            db=DBName)
 
     dbc = conn.cursor()
+
+    print "Processing " + subreddit
 
     dbc.execute("""INSERT INTO Subcounts (Date, Subreddit, Subcount) VALUES (%s,%s,%s)""",(date,subreddit,subscribers))
     conn.commit()
     conn.close()
+
 
 for sub in subreddits:
     process(sub)
